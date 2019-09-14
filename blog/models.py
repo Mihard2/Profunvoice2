@@ -1,4 +1,5 @@
 from django.db import models
+from ckeditor_uploader.fields import RichTextUploadingField
 
 # Create your models here.
 
@@ -32,9 +33,9 @@ class Longgrid(models.Model):
     public = models.BooleanField(null=True, default=False, verbose_name='Опубликовать')
     date_pub = models.DateTimeField(auto_now_add=False, blank=True, verbose_name='Создан')
     image = models.ImageField(upload_to='media/', null=True, verbose_name='Изображение для превью')
-    # short_description = WYSWYG
+    short_description = RichTextUploadingField(null=True, verbose_name='Короткое описание статьи')
     detail_image = models.ImageField(upload_to='media/', null=True, verbose_name='Детальное изображение')
-    # description =  WYSWYG
+    description =  RichTextUploadingField(null=True, verbose_name='Полное описание статьи')
     tags = models.ManyToManyField(LonggridTag, blank=True, verbose_name="Теги статьи", related_name="Longgrid")
 
     def __str__(self):
