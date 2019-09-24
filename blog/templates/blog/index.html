@@ -4,38 +4,15 @@
     Profan Voice Main Page
 {% endblock %}
 
-    {% block content %}
-        {% block name_page %}
-            <h1> Main Page </h1>
-        {% endblock %}
-        <div>
-          {% for l in longgrids %}
-            <div class="card mb-3" style="max-width: 540px; margin: 20px auto;">
-              <div class="row no-gutters">
-                <div class="col-md-4">
-                  <a href="#">
-                    <img src="{{ l.image.url }}" class="card-img" alt="...">
-                  </a>
-                </div>
-                <div class="col-md-8">
-                  <div class="card-body">
-                    <a href="#">
-                      <h5 class="card-title">{{ l.title }}</h5>
-                    </a>
-                    <p class="card-text">{% autoescape off %} {{ l.short_description|slice:":200"  }}... {% endautoescape %}</p>
-                    <p class="card-text">
-                        <small class="text-muted">
-                            {% with l.tags as tags %}
-                                {% include "blog/components/tag_list.html" %}
-                            {% endwith %}
-                        </small>
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          {% endfor %}
-        </div>  
-
-
-    {% endblock %}
+{% block content %}
+   {% block name_page %}
+       <h1> Main Page </h1>
+   {% endblock %}
+   <div>
+      {% for l in longgrids %}
+        {% if l.public or request.user.is_staff %}
+          {% include 'blog/components/longgrid_block.html' %}
+        {% endif %}
+      {% endfor %}
+   </div>  
+{% endblock %}

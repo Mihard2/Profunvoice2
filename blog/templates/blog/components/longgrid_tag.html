@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}
+    <h1> tag page </h1> 
+{% endblock %}
+
+{% block content %}
+   {% block name_page %}
+       <h1> Longgrids with "{{ tag.name }}" tag: </h1>
+   {% endblock %}
+   <div>
+
+        {% for l in l %}
+           <div class="card mb-3" style="max-width: 540px; margin: 20px auto;">
+              <div class="row no-gutters">
+                <div class="col-md-4">
+                  <a href="{% url 'blog:longgrid_detail' l.slug %}">
+                    <img src="{{ l.image.url }}" class="card-img" alt="...">
+                  </a>
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                     {% if request.user.is_staff %}
+                      <div class="statuBlock">
+                       {% if l.public %}
+                        <p> опубликовано </p>
+                       {% endif %}
+                       {% if not l.public %}
+                        <p> не опубликовано </p>
+                       {% endif %}                  
+                      </div>
+                     {% endif %}
+                    <a href="{% url 'blog:longgrid_detail' l.slug %}">
+                      <h5 class="card-title">{{ l.title }}</h5>
+                    </a>
+                    <p class="card-text">{% autoescape off %} {{ l.short_description|slice:":200"  }}... {% endautoescape %}</p>
+                    <p class="card-text">
+                        <small class="text-muted">
+                            {% with l.tags as tags %}
+                                {% include "blog/components/tag_list.html" %}
+                            {% endwith %}
+                        </small>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>        
+            {% endfor %}
+
+   </div>  
+{% endblock %}

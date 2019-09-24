@@ -1,5 +1,10 @@
 from django.contrib import admin
-from blog.models import (Slider, Longgrid, LonggridTag)
+from blog.models import (Slider, 
+                         LonggridTag, 
+                         Longgrid,
+                        #  NBATag,
+                        #  NBA
+                        )
 
 # Register your models here.
 

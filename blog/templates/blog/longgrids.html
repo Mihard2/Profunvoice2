@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-    <h3> Longgrid page </h3>
-
+      {% for l in longgrids %}
+        {% if l.public or request.user.is_staff %}
+          {% include 'blog/components/longgrid_block.html' %}
+        {% endif %}
+      {% endfor %}
 {% endblock %}

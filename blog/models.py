@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from ckeditor_uploader.fields import RichTextUploadingField
 
 # Create your models here.
@@ -17,6 +18,19 @@ class Slider(models.Model):
         return '{}'.format(self.title)
 
 
+class AbstractPage(models.Model):
+    slug = models.SlugField(max_length=100, blank=True, null=True, db_index=True, unique=True, verbose_name='uri')
+    public = models.BooleanField(null=True, default=False, verbose_name='Опубликовать')
+    date_pub = models.DateTimeField(auto_now_add=False, blank=True, verbose_name='Создан')
+    image = models.ImageField(upload_to='media/', null=True, verbose_name='Изображение для превью')
+    short_description = RichTextUploadingField(null=True, verbose_name='Короткое описание статьи')
+    detail_image = models.ImageField(upload_to='media/', null=True, verbose_name='Детальное изображение')
+    description =  RichTextUploadingField(null=True, verbose_name='Полное описание статьи')
+
+    class Meta:
+        abstract = True
+
+
 class LonggridTag(models.Model):
     name = models.CharField(null=True, unique=True, max_length=50, verbose_name='Тэг франшизы')
     slug = models.SlugField(max_length=50, null=True,
@@ -26,20 +40,42 @@ class LonggridTag(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('blog:longgrid_tag_url', kwargs={'slug': self.slug})
 
-class Longgrid(models.Model):
+
+class Longgrid(AbstractPage):
     title = models.CharField(max_length=150, null=True, verbose_name='Название Лонггрида')
-    slug = models.SlugField(max_length=100, blank=True, null=True, db_index=True, unique=True, verbose_name='uri')
-    public = models.BooleanField(null=True, default=False, verbose_name='Опубликовать')
-    date_pub = models.DateTimeField(auto_now_add=False, blank=True, verbose_name='Создан')
-    image = models.ImageField(upload_to='media/', null=True, verbose_name='Изображение для превью')
-    short_description = RichTextUploadingField(null=True, verbose_name='Короткое описание статьи')
-    detail_image = models.ImageField(upload_to='media/', null=True, verbose_name='Детальное изображение')
-    description =  RichTextUploadingField(null=True, verbose_name='Полное описание статьи')
-    tags = models.ManyToManyField(LonggridTag, blank=True, verbose_name="Теги статьи", related_name="Longgrid")
+    tags = models.ManyToManyField(LonggridTag, blank=True, verbose_name="Теги статьи Longgrid", related_name="Longgrids")
 
     def __str__(self):
         return self.title
 
-    def get_absolute_url(self):
-        return reverse("blog:longgrids", kwargs={"slug": self.slug})
+    class Meta:
+        verbose_name = "Лонггрид"
+        verbose_name_plural = "Лонггриды"
+
+
+# class NBATag(models.Model):
+#     name = models.CharField(null=True, unique=True, max_length=50, verbose_name='Тэг франшизы')
+#     slug = models.SlugField(max_length=50, null=True,
+#                             db_index=True, unique=True,
+#                             verbose_name='uri', help_text='Поле задает уникалный адрес объекта в разделе сайта')
+
+#     def __str__(self, slug):
+#         return self.name
+
+
+# class NBA(AbstractPage):
+#     title = models.CharField(max_length=150, null=True, verbose_name='Название NBA')
+#     tags = models.ManyToManyField(NBATag, blank=True, verbose_name="Теги статьи NBA", related_name="NBA")
+
+#     def __str__(self):
+#         return self.title
+
+#     def get_absolute_url(self):
+#         return reverse("blog:NBA", kwargs={"slug": self.slug})
+
+#     class Meta:
+#         verbose_name = "NBA"
+#         verbose_name_plural = "NBA"

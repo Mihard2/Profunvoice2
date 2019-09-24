@@ -10,7 +10,8 @@ app_name='blog'
 
 urlpatterns = [
     path('', views.index, name="index"),
-    re_path(r'longgrids/(?P<slug>[a-z0-9-_]+)/$', views.longgrid_detail, name='longgrid_detail'),
+    re_path(r'longgrids/tags/(?P<slug>[A-Za-z0-9-_]+)/$', views.longgrid_tag, name='longgrid_tag_url'),   
+    re_path(r'longgrids/(?P<slug>[A-Za-z0-9-_]+)/$', views.longgrid_detail, name='longgrid_detail'),
     path('longgrids/', views.longgrids, name="longgrids"),
 ]
 
