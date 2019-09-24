@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib import admin
 from ckeditor_uploader.fields import RichTextUploadingField
 
 # Create your models here.
@@ -24,7 +25,7 @@ class AbstractPage(models.Model):
     date_pub = models.DateTimeField(auto_now_add=False, blank=True, verbose_name='Создан')
     image = models.ImageField(upload_to='media/', null=True, verbose_name='Изображение для превью')
     short_description = RichTextUploadingField(null=True, verbose_name='Короткое описание статьи')
-    detail_image = models.ImageField(upload_to='media/', null=True, verbose_name='Детальное изображение')
+    # detail_image = models.ImageField(upload_to='media/', null=True, verbose_name='Детальное изображение')
     description =  RichTextUploadingField(null=True, verbose_name='Полное описание статьи')
 
     class Meta:
@@ -32,7 +33,7 @@ class AbstractPage(models.Model):
 
 
 class LonggridTag(models.Model):
-    name = models.CharField(null=True, unique=True, max_length=50, verbose_name='Тэг франшизы')
+    name = models.CharField(null=True, unique=True, max_length=50, verbose_name='Тэг лонггрида')
     slug = models.SlugField(max_length=50, null=True,
                             db_index=True, unique=True,
                             verbose_name='uri', help_text='Поле задает уникалный адрес объекта в разделе сайта')
@@ -55,6 +56,30 @@ class Longgrid(AbstractPage):
         verbose_name = "Лонггрид"
         verbose_name_plural = "Лонггриды"
 
+
+class NBATag(models.Model):
+    name = models.CharField(null=True, unique=True, max_length=50, verbose_name='Тэг франшизы')
+    slug = models.SlugField(max_length=50, null=True,
+                            db_index=True, unique=True,
+                            verbose_name='uri', help_text='Поле задает уникалный адрес объекта в разделе сайта')
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('blog:nba_tag_url', kwargs={'slug': self.slug})
+
+
+class NBA(AbstractPage):
+    title = models.CharField(max_length=150, null=True, verbose_name='Название статьи NBA')
+    tags = models.ManyToManyField(LonggridTag, blank=True, verbose_name="Теги статьи NBA", related_name="nba")
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = "NBA"
+        verbose_name_plural = "NBAs"
 
 # class NBATag(models.Model):
 #     name = models.CharField(null=True, unique=True, max_length=50, verbose_name='Тэг франшизы')
