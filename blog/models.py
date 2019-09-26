@@ -23,7 +23,7 @@ class AbstractPage(models.Model):
     slug = models.SlugField(max_length=100, blank=True, null=True, db_index=True, unique=True, verbose_name='uri')
     public = models.BooleanField(null=True, default=False, verbose_name='Опубликовать')
     date_pub = models.DateTimeField(auto_now_add=False, blank=True, verbose_name='Создан')
-    image = models.ImageField(upload_to='media/', null=True, verbose_name='Изображение для превью')
+    image = models.ImageField(blank=True, upload_to='media/', null=True, verbose_name='Изображение для превью')
     short_description = RichTextUploadingField(null=True, verbose_name='Короткое описание статьи')
     # detail_image = models.ImageField(upload_to='media/', null=True, verbose_name='Детальное изображение')
     description =  RichTextUploadingField(null=True, verbose_name='Полное описание статьи')
@@ -58,7 +58,7 @@ class Longgrid(AbstractPage):
 
 
 class NBATag(models.Model):
-    name = models.CharField(null=True, unique=True, max_length=50, verbose_name='Тэг франшизы')
+    name = models.CharField(null=True, unique=True, max_length=50, verbose_name='Тэг NBA')
     slug = models.SlugField(max_length=50, null=True,
                             db_index=True, unique=True,
                             verbose_name='uri', help_text='Поле задает уникалный адрес объекта в разделе сайта')
@@ -72,7 +72,7 @@ class NBATag(models.Model):
 
 class NBA(AbstractPage):
     title = models.CharField(max_length=150, null=True, verbose_name='Название статьи NBA')
-    tags = models.ManyToManyField(LonggridTag, blank=True, verbose_name="Теги статьи NBA", related_name="nba")
+    tags = models.ManyToManyField(NBATag, blank=True, verbose_name="Теги статьи NBA", related_name="NBA")
 
     def __str__(self):
         return self.title
@@ -80,27 +80,3 @@ class NBA(AbstractPage):
     class Meta:
         verbose_name = "NBA"
         verbose_name_plural = "NBAs"
-
-# class NBATag(models.Model):
-#     name = models.CharField(null=True, unique=True, max_length=50, verbose_name='Тэг франшизы')
-#     slug = models.SlugField(max_length=50, null=True,
-#                             db_index=True, unique=True,
-#                             verbose_name='uri', help_text='Поле задает уникалный адрес объекта в разделе сайта')
-
-#     def __str__(self, slug):
-#         return self.name
-
-
-# class NBA(AbstractPage):
-#     title = models.CharField(max_length=150, null=True, verbose_name='Название NBA')
-#     tags = models.ManyToManyField(NBATag, blank=True, verbose_name="Теги статьи NBA", related_name="NBA")
-
-#     def __str__(self):
-#         return self.title
-
-#     def get_absolute_url(self):
-#         return reverse("blog:NBA", kwargs={"slug": self.slug})
-
-#     class Meta:
-#         verbose_name = "NBA"
-#         verbose_name_plural = "NBA"

@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}
+    <h1> tag page </h1> 
+{% endblock %}
+
+{% block content %}
+   {% block name_page %}
+       <h1> NBA with "{{ tag.name }}" tag: </h1>
+   {% endblock %}
+   <div>
+
+        {% for n in n %}
+           <div class="card mb-3" style="max-width: 540px; margin: 20px auto;">
+              <div class="row no-gutters">
+                <div class="col-md-4">
+                {% if n.image %}
+                  <a href="{% url 'blog:nba_detail' n.slug %}">
+                    <img src="{{ n.image.url }}" class="card-img" alt="...">
+                  </a>
+                {% endif %}
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                     {% if request.user.is_staff %}
+                      <div class="statuBlock">
+                       {% if n.public %}
+                        <p> опубликовано </p>
+                       {% endif %}
+                       {% if not n.public %}
+                        <p> не опубликовано </p>
+                       {% endif %}                  
+                      </div>
+                     {% endif %}
+                    <a href="{% url 'blog:nba_detail' n.slug %}">
+                      <h5 class="card-title">{{ n.title }}</h5>
+                    </a>
+                    <p class="card-text">{% autoescape off %} {{ n.short_description|slice:":200"  }}... {% endautoescape %}</p>
+                    <p class="card-text">
+                        <small class="text-muted">
+                            {% with n.tags as tags %}
+                                {% include "blog/components/tag_list.html" %}
+                            {% endwith %}
+                        </small>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>        
+            {% endfor %}
+
+   </div>  
+{% endblock %}

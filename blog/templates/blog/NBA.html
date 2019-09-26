@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
-      {% for page in longgrids %}
+      {% for page in nba %}
         {% if page.public or request.user.is_staff %}
-          {% include 'blog/components/longgrid_block.html' %}
+          {% include 'blog/components/nba_block.html' %}
         {% endif %}
       {% endfor %}
 {% endblock %}

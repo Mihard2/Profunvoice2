@@ -3,7 +3,7 @@
   <div class="row no-gutters">
     <div class="col-md-4">
     {% if page.image  %}
-      <a href="{% url 'blog:longgrid_detail' page.slug %}">
+      <a href="{% url 'blog:nba_detail' page.slug %}">
         <img src="{{ page.image.url }}" class="card-img" alt="...">
       </a>
     {% endif %}
@@ -20,7 +20,7 @@
            {% endif %}                  
           </div>
          {% endif %}
-        <a href="{% url 'blog:longgrid_detail' page.slug %}">
+        <a href="{% url 'blog:nba_detail' page.slug %}">
           <h5 class="card-title">{{ page.title }}</h5>
         </a>
         <p class="card-text">{% autoescape off %} {{ page.short_description|slice:":200"  }}... {% endautoescape %}</p>
@@ -34,4 +34,5 @@
       </div>
     </div>
   </div>
+</div>
 </div>

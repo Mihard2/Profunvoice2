@@ -12,7 +12,10 @@ urlpatterns = [
     path('', views.index, name="index"),
     re_path(r'longgrids/tags/(?P<slug>[A-Za-z0-9-_]+)/$', views.longgrid_tag, name='longgrid_tag_url'),   
     re_path(r'longgrids/(?P<slug>[A-Za-z0-9-_]+)/$', views.longgrid_detail, name='longgrid_detail'),
+    re_path(r'nba/tags/(?P<slug>[A-Za-z0-9-_]+)/$', views.nba_tag, name='nba_tag_url'),   
+    re_path(r'nba/(?P<slug>[A-Za-z0-9-_]+)/$', views.nba_detail, name='nba_detail'),
     path('longgrids/', views.longgrids, name="longgrids"),
+    path('nba/', views.nba, name="nba"),
 ]
 
 if settings.DEBUG:
