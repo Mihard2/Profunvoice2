@@ -30,6 +30,7 @@ class AbstractPage(models.Model):
 
     class Meta:
         abstract = True
+        ordering = ['date_pub']
 
 
 class LonggridTag(models.Model):
@@ -43,6 +44,9 @@ class LonggridTag(models.Model):
 
     def get_absolute_url(self):
         return reverse('blog:longgrid_tag_url', kwargs={'slug': self.slug})
+
+    class Meta:
+        ordering = ['name']
 
 
 class Longgrid(AbstractPage):
@@ -68,6 +72,9 @@ class NBATag(models.Model):
 
     def get_absolute_url(self):
         return reverse('blog:nba_tag_url', kwargs={'slug': self.slug})
+
+    class Meta:
+        ordering = ['name']
 
 
 class NBA(AbstractPage):

@@ -1,9 +1,31 @@
 {% extends 'base.html' %}
 
 {% block content %}
-      {% for page in longgrids %}
+      {% for page in longgrids.object_list %}
         {% if page.public or request.user.is_staff %}
           {% include 'blog/components/longgrid_block.html' %}
         {% endif %}
       {% endfor %}
+
+    <nav aria-label="..." style="margin: 20px auto; display: flex; justify-content: center;">
+      <ul class="pagination">
+          <li class="page-item {% if not prev_url %} disabled {% endif %}">
+            <a class="page-link" href="{{ prev_url }}" tabindex="-1" aria-disabled="true">Previous</a>
+          </li>
+            {% for n in longgrids.paginator.page_range %}
+              {% if longgrids.number == n %}
+                <li class="page-item active" aria-current="page">
+                  <a class="page-link" href="?page={{ n }}">{{ n }} <span class="sr-only">(current)</span></a>
+                </li>
+              {% elif n > longgrids.number|add:-2 and n < longgrids.number|add:2 %}
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ n }}">{{ n }}</a>
+                </li>
+              {% endif %}
+            {% endfor %}        
+        <li class="page-item {% if not next_url %} disabled {% endif %}">
+            <a class="page-link" href="{{ next_url }}">Next</a>
+        </li>
+      </ul>
+    </nav>
 {% endblock %}

@@ -9,22 +9,19 @@
        <h1> Main Page </h1>
    {% endblock %}
    <div>
-    <h3> Longgrids: </h3>
-      {% for page in longgrids %}
-        {% if page.public or request.user.is_staff %}
-          {% include 'blog/components/longgrid_block.html' %}
-        {% endif %}
-      {% endfor %}
+      <h3> Longgrids: </h3>
+        {% for page in longgrids %}
+          {% if page.public or request.user.is_staff %}
+            {% include 'blog/components/longgrid_block.html' %}
+          {% endif %}
+        {% endfor %}
    </div>  
    <div>
-    <h3> Подкасты:</h3>
-  </div>
-  <div>
-    <h3> NBAs: </h3>
-      {% for page in nba %}
-        {% if page.public or request.user.is_staff %}
-          {% include 'blog/components/nba_block.html' %}
-        {% endif %}
-      {% endfor %}
-   </div>
+      <h3> NBAs: </h3>
+        {% for page in nba %}
+          {% if page.public or request.user.is_staff %}
+            {% include 'blog/components/nba_block.html' %}
+          {% endif %}
+        {% endfor %}
+   </div>  
 {% endblock %}

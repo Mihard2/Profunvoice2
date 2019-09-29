@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.db import models
 from django.utils import timezone
+from django.core.paginator import Paginator
 from blog.models import (Longgrid,
                          Slider,
                          LonggridTag,
@@ -24,7 +25,29 @@ def index(request):
 
 def longgrids(request):
     longgrids = Longgrid.objects.all()
-    return render(request, 'blog/longgrids.html', {'longgrids': longgrids})
+    paginator = Paginator(longgrids, 2)
+    page_number = request.GET.get('page', 1)
+    page = paginator.get_page(page_number)
+    is_paginator = page.has_other_pages()
+
+    if page.has_previous():
+        prev_url = '?page={}'.format(page.previous_page_number())
+    else:
+        prev_url = ''
+
+    if page.has_next():
+        next_url = '?page={}'.format(page.next_page_number())
+    else:
+        next_url = ''
+
+    context = {
+        'longgrids': page,
+        'is_paginator': is_paginator,
+        'prev_url': prev_url,
+        'next_url': next_url
+    }
+
+    return render(request, 'blog/longgrids.html', context)
 
 def longgrid_detail(request, slug):
     longgrid_detail = Longgrid.objects.get(slug=slug)
@@ -37,7 +60,29 @@ def longgrid_tag(request, slug):
 
 def nba(request):
     nba = NBA.objects.all()
-    return render(request, 'blog/NBA.html', {'nba': nba})
+    paginator = Paginator(nba, 2)
+    page_number = request.GET.get('page', 1)
+    page = paginator.get_page(page_number)
+    is_paginator = page.has_other_pages()
+
+    if page.has_previous():
+        prev_url = '?page={}'.format(page.previous_page_number())
+    else:
+        prev_url = ''
+
+    if page.has_next():
+        next_url = '?page={}'.format(page.next_page_number())
+    else:
+        next_url = ''
+
+    context = {
+        'nba': page,
+        'is_paginator': is_paginator,
+        'prev_url': prev_url,
+        'next_url': next_url
+    }
+
+    return render(request, 'blog/NBA.html', context)
 
 def nba_detail(request, slug):
     nba_detail = NBA.objects.get(slug=slug)

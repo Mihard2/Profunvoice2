@@ -2,7 +2,14 @@
 
 {% block content %}
 
-    <h1> {{ page.title }} </h1>
-    
-    {% autoescape off %} {{ page.description }}{% endautoescape %}
+<h1> {{ page.title }} </h1>
+
+{% autoescape off %} {{ page.description }}{% endautoescape %}
+<p class="card-text">
+    <small class="text-muted">
+        {% with page.tags as tags %}
+        {% include "blog/components/tag_list.html" %}
+        {% endwith %}
+    </small>
+</p>
 {% endblock %}
